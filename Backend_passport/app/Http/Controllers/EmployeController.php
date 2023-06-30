@@ -4,13 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\Employe;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class EmployeController extends Controller
 {
     public function index()
     {
-        $employes = Employe::all();
-        return response($employes);
+            $employes = Employe::all();
+            return response($employes);
+            return response()->json([
+                'success' => true,
+                'message' => $employes
+            ]);
     }
     public function store(Request $request)
     {

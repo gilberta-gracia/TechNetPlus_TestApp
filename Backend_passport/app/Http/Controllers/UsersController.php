@@ -45,11 +45,13 @@ class UsersController extends Controller
             $user = Auth::user();
             if ($user instanceof User) {
                 $success['token'] = $user->createToken('appToken')->accessToken;
+                $role = $user->getRoleNames();
                 //After successfull authentication, notice how I return json parameters
                  return response()->json([
                    'success' => true,
                    'token' => $success,
-                   'user' => $user
+                   'user' => $user,
+                   'role' => $role
                ]);
             }else{
                 print('error');
@@ -72,6 +74,7 @@ class UsersController extends Controller
         'success' => true,
         'message' => 'Logout successfully'
     ]);
+
     }else {
       return response()->json([
         'success' => false,
@@ -144,9 +147,22 @@ public function showRole(Request $request)
         $role = $user->getRoleNames();
 
         if (!$role) {
-            return response()->json(['error' => 'Rôle non trouvé'], 404);
+            return response('Aucun');
         }
         return response()->json(['role' => $role]);
     }
+
+    function removeRole(Request $request) {
+       {
+        $nom = $request->user_name;
+        $user = User::where('name', $nom)->firstOrFail(); 
+        $name = $request->role_name;
+        $role = Role::where('name', $name)->firstOrFail();
+        if ($user && $role) {
+          $user->roles()->detach($role);
+        }
+        return response()->json(['message' => 'Rôle supprimé avec succès.']);
+      } 
+  }
 
 }

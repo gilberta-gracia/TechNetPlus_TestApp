@@ -24,14 +24,9 @@ Route::get('logout', [UsersController::class, 'logout'])->middleware('auth:api')
 
 Route::apiResource("employes", EmployeController::class); 
 Route::apiResource("users", UsersController::class);
-// ->middleware('admin') ;
-    // ->middleware(RoleMiddleware::class.':Admin');
 
 // LES ROLES 
 Route::post('users/add_role', [UsersController::class, 'assignRole']);
 Route::post('users/see_role', [UsersController::class, 'showRole']);
-
-// Route::middleware('auth:api')->group(function () {
-//     Route::resource('posts', PostController::class);
-// });
+Route::post('users/delete_role', [UsersController::class, 'removeRole']);
 
